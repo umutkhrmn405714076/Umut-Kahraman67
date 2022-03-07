@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Stack_Uygulama_2
+namespace Arraylist_Uygulama_3
 {
     public partial class Form1 : Form
     {
@@ -16,31 +16,55 @@ namespace Stack_Uygulama_2
         {
             InitializeComponent();
         }
-        Stack yigin = new Stack();
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
+        ArrayList sehirler = new ArrayList();
 
         private void btnEkle_Click(object sender, EventArgs e)
         {
-            yigin.Push(txtAdSoyad.Text);
+            sehirler.Add(txtSehirler.Text);
             Listele();
         }
 
-        private void Listele()
+         public void Listele()
         {
-            ListeStack.Items.Clear();
-            foreach (string eleman in yigin)
+            Şehirler.Items.Clear();
+            foreach (string sehir in sehirler)
             {
-                ListeStack.Items.Add(eleman);
+                Şehirler.Items.Add(sehir);
             }
         }
 
-        private void btnCikart_Click(object sender, EventArgs e)
-        {
-            yigin.Pop();
-            Listele();
-        }
+         private void btnAra_Click(object sender, EventArgs e)
+         {
+             if (sehirler.Contains(txtSehirler.Text))
+             {
+                 label2.Text = "Aranan Değer Bulundu.";
+                 Şehirler.SelectedIndex = sehirler.IndexOf(txtSehirler.Text);
+             }
+             else
+             {
+                 label2.Text = "Aranan Değer Bulunamadı.";
+             }
+         }
+
+         private void btnSil_Click(object sender, EventArgs e)
+         {
+             int indexNo = Şehirler.SelectedIndex;
+             sehirler.RemoveAt(indexNo);
+             Listele();
+         }
+
+         private void btnGüncelle_Click(object sender, EventArgs e)
+         {
+             int indexNo = Şehirler.SelectedIndex;
+             sehirler[indexNo] = txtSehirler.Text;
+             Listele();
+         }
+
+         private void btnArayaEkle_Click(object sender, EventArgs e)
+         {
+             int indexNo = Şehirler.SelectedIndex;
+             sehirler.Insert(indexNo,txtSehirler.Text);
+             Listele();
+         }
     }
 }

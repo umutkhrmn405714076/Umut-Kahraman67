@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,63 +7,123 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Arraylist_Uygulama_3
+namespace NotDefteri
 {
     public partial class Form1 : Form
     {
+        DosyaYardimcisi dosyaYardimcisi = new DosyaYardimcisi();
+        bool degisti = false;
+
+        EditorYardimcisi editorYardimcisi = new EditorYardimcisi();
+
         public Form1()
         {
             InitializeComponent();
-        }
-        ArrayList sehirler = new ArrayList();
 
-        private void btnEkle_Click(object sender, EventArgs e)
-        {
-            sehirler.Add(txtSehirler.Text);
-            Listele();
+            dosyaYardimcisi.EditorAyarla(txtEditor);
+            dosyaYardimcisi.FormAyarla(this);
+            editorYardimcisi.EditorAyarla(txtEditor);
         }
 
-         public void Listele()
+
+        private void miYeni_Click(object sender, EventArgs e)
         {
-            Şehirler.Items.Clear();
-            foreach (string sehir in sehirler)
+            dosyaYardimcisi.Yeni();
+            degisti = false;
+        }
+
+        private void miAc_Click(object sender, EventArgs e)
+        {
+            DialogResult cevap = openFileDialog1.ShowDialog();
+
+            if (cevap == DialogResult.OK)
             {
-                Şehirler.Items.Add(sehir);
+                dosyaYardimcisi.Ac(openFileDialog1.FileName);
+                degisti = false;
             }
         }
 
-         private void btnAra_Click(object sender, EventArgs e)
-         {
-             if (sehirler.Contains(txtSehirler.Text))
-             {
-                 label2.Text = "Aranan Değer Bulundu.";
-                 Şehirler.SelectedIndex = sehirler.IndexOf(txtSehirler.Text);
-             }
-             else
-             {
-                 label2.Text = "Aranan Değer Bulunamadı.";
-             }
-         }
+        private void miKaydet_Click(object sender, EventArgs e)
+        {
+            if (dosyaYardimcisi.YeniDosyaMi)
+            {
+                DialogResult cevap = saveFileDialog1.ShowDialog();
 
-         private void btnSil_Click(object sender, EventArgs e)
-         {
-             int indexNo = Şehirler.SelectedIndex;
-             sehirler.RemoveAt(indexNo);
-             Listele();
-         }
+                if (cevap == DialogResult.OK)
+                {
+                    dosyaYardimcisi.Kaydet(saveFileDialog1.FileName);
+                }
+            }
+            else
+                dosyaYardimcisi.Kaydet();
+        }
 
-         private void btnGüncelle_Click(object sender, EventArgs e)
-         {
-             int indexNo = Şehirler.SelectedIndex;
-             sehirler[indexNo] = txtSehirler.Text;
-             Listele();
-         }
+        private void miFarkliKaydet_Click(object sender, EventArgs e)
+        {
+            DialogResult cevap = saveFileDialog1.ShowDialog();
 
-         private void btnArayaEkle_Click(object sender, EventArgs e)
-         {
-             int indexNo = Şehirler.SelectedIndex;
-             sehirler.Insert(indexNo,txtSehirler.Text);
-             Listele();
-         }
+            if (cevap == DialogResult.OK)
+            {
+                dosyaYardimcisi.Kaydet(saveFileDialog1.FileName);
+            }
+
+        }
+
+        private void miKapat_Click(object sender, EventArgs e)
+        {
+            if (degisti)
+            {
+                DialogResult cevap = MessageBox.Show("Çıkış yapmadan önce değişiklikler kayıt edilsin mi?", 
+                    "Uyarı", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (cevap == DialogResult.Yes)
+                    miKaydet_Click(null, null);
+                else if (cevap == DialogResult.Cancel)
+                    return;
+            }
+
+            Close();
+        }
+
+        private void txtEditor_TextChanged(object sender, EventArgs e)
+        {
+            degisti = true;
+        }
+
+        private void miKes_Click(object sender, EventArgs e)
+        {
+            txtEditor.Cut();
+        }
+
+        private void miKopyala_Click(object sender, EventArgs e)
+        {
+           
+            txtEditor.Copy();
+        }
+
+        private void miYapistir_Click(object sender, EventArgs e)
+        {
+            txtEditor.Paste();
+        }
+
+        private void miTumunuSec_Click(object sender, EventArgs e)
+        {
+            txtEditor.SelectAll();
+        }
+
+        private void miBulVeDegistir_Click(object sender, EventArgs e)
+        {
+            pnlBul.Visible = true;
+        }
+
+        private void btnBulKapat_Click(object sender, EventArgs e)
+        {
+            pnlBul.Visible = false;
+        }
+
+        private void btnBul_Click(object sender, EventArgs e)
+        {
+            editorYardimcisi.Bul(txtBul.Text);
+        }
     }
 }

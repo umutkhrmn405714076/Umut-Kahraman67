@@ -7,123 +7,75 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace NotDefteri
+namespace GroupBox_uygulaması_1
 {
     public partial class Form1 : Form
     {
-        DosyaYardimcisi dosyaYardimcisi = new DosyaYardimcisi();
-        bool degisti = false;
-
-        EditorYardimcisi editorYardimcisi = new EditorYardimcisi();
-
         public Form1()
         {
             InitializeComponent();
-
-            dosyaYardimcisi.EditorAyarla(txtEditor);
-            dosyaYardimcisi.FormAyarla(this);
-            editorYardimcisi.EditorAyarla(txtEditor);
         }
 
-
-        private void miYeni_Click(object sender, EventArgs e)
+        private void btnHesapla_Click(object sender, EventArgs e)
         {
-            dosyaYardimcisi.Yeni();
-            degisti = false;
-        }
+            decimal tabanFiyat = 500;
+            
+            //İŞLEMCİ FİYAT HESAPLAMASI
+            
+            decimal cpuFiyat = 0;
+            
+            if (rbCpul7.Checked)
+                cpuFiyat = 10499;
+            
+            else if (rbCpul5.Checked)
+                cpuFiyat = 7797;
+            
+            else if (rbCpul3.Checked)
+                cpuFiyat = 3757;
+            
+            else if (rbCpuR5.Checked)
+                cpuFiyat = 4549;
+            
+            else if (rbCpuR3.Checked)
+                cpuFiyat = 4550;
+            tabanFiyat += cpuFiyat;
+            
+            //RAM BELLEK FİYAT HESAPLAMASI
 
-        private void miAc_Click(object sender, EventArgs e)
-        {
-            DialogResult cevap = openFileDialog1.ShowDialog();
+            decimal ramFiyat = 0;
 
-            if (cevap == DialogResult.OK)
-            {
-                dosyaYardimcisi.Ac(openFileDialog1.FileName);
-                degisti = false;
-            }
-        }
+            if (rbRam16.Checked)
+                cpuFiyat = 1629;
 
-        private void miKaydet_Click(object sender, EventArgs e)
-        {
-            if (dosyaYardimcisi.YeniDosyaMi)
-            {
-                DialogResult cevap = saveFileDialog1.ShowDialog();
+            else if (rbRam8.Checked)
+                cpuFiyat = 595;
+            
+            else if (rbRam4.Checked)
+                cpuFiyat = 1973;
 
-                if (cevap == DialogResult.OK)
-                {
-                    dosyaYardimcisi.Kaydet(saveFileDialog1.FileName);
-                }
-            }
-            else
-                dosyaYardimcisi.Kaydet();
-        }
+            tabanFiyat += ramFiyat;
 
-        private void miFarkliKaydet_Click(object sender, EventArgs e)
-        {
-            DialogResult cevap = saveFileDialog1.ShowDialog();
+            MessageBox.Show(string.Format("Taban Fiyat {0;C}", tabanFiyat));
+            
+            decimal hddFiyat = 0;
+            
+            if (rbHdd1000.Checked)
+                hddFiyat = 800;
+            
+            if (rbHdd500.Checked)
+                hddFiyat = 570;
 
-            if (cevap == DialogResult.OK)
-            {
-                dosyaYardimcisi.Kaydet(saveFileDialog1.FileName);
-            }
+            if (rbHdd320.Checked)
+                hddFiyat = 340;
 
-        }
+            decimal cbFiyat = 0;
 
-        private void miKapat_Click(object sender, EventArgs e)
-        {
-            if (degisti)
-            {
-                DialogResult cevap = MessageBox.Show("Çıkış yapmadan önce değişiklikler kayıt edilsin mi?", 
-                    "Uyarı", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-
-                if (cevap == DialogResult.Yes)
-                    miKaydet_Click(null, null);
-                else if (cevap == DialogResult.Cancel)
-                    return;
-            }
-
-            Close();
-        }
-
-        private void txtEditor_TextChanged(object sender, EventArgs e)
-        {
-            degisti = true;
-        }
-
-        private void miKes_Click(object sender, EventArgs e)
-        {
-            txtEditor.Cut();
-        }
-
-        private void miKopyala_Click(object sender, EventArgs e)
-        {
-           
-            txtEditor.Copy();
-        }
-
-        private void miYapistir_Click(object sender, EventArgs e)
-        {
-            txtEditor.Paste();
-        }
-
-        private void miTumunuSec_Click(object sender, EventArgs e)
-        {
-            txtEditor.SelectAll();
-        }
-
-        private void miBulVeDegistir_Click(object sender, EventArgs e)
-        {
-            pnlBul.Visible = true;
-        }
-
-        private void btnBulKapat_Click(object sender, EventArgs e)
-        {
-            pnlBul.Visible = false;
-        }
-
-        private void btnBul_Click(object sender, EventArgs e)
-        {
-            editorYardimcisi.Bul(txtBul.Text);
+            if (cbDWD.Checked)
+                cbFiyat = 900;
+            if (cbWepCam.Checked)
+                cbFiyat = 700;
+            if (cbWifi.Checked)
+                cbFiyat = 550;
         }
     }
 }

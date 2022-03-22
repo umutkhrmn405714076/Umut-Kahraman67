@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Boyut_Ayarlama
+namespace Basit_veri_bağlama_uygulaması_1
 {
     public partial class Form1 : Form
     {
@@ -15,31 +15,11 @@ namespace Boyut_Ayarlama
         {
             InitializeComponent();
         }
-        Form2 f2 =  new Form2();
-        private void btnBoyutKaydet_Click(object sender, EventArgs e)
+
+        private void Form1_Load(object sender, EventArgs e)
         {
-            int sizex;
-            int sizey;
-            sizex = int.Parse(textBox3.Text);
-            sizey = int.Parse(textBox4.Text);
-            f2.Size= new Size(sizex,sizey);
-
-        }
-
-        private void btnKonumKaydet_Click(object sender, EventArgs e)
-        {
-            int top;
-            int left;
-            top = int.Parse(textBox1.Text);
-            left = int.Parse(textBox2.Text);
-            f2.Location= new Point(Top);
-
-        }
-
-        private void btnFormuGöster_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            f2.Show();
+            Binding bagla = new Binding("Text", txtKaynak, "Text");
+            txtHedef.DataBindings.Add(bagla);
         }
     }
 }
